@@ -19,10 +19,16 @@ public class Grid : GridContainer
             for (int y = 0; y < CellGrid.GetLength(1); y++)
             {
                 var cell = this.cell.Instance() as Cell;
+                // set the cells X and Y
+                cell.X = x;
+                cell.Y = y;
                 // add the cell to the grid
                 CellGrid[x, y] = cell;
                 // add the cell to the GridContainer
                 AddChild(cell);
+
+                // test code line
+                cell.IsAlive = x % 2 == 0;
             }
         }
 

@@ -1,10 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Main : Node2D
 {
-
+    private const int Height = 10;
+    private const int Width = 10;
+    // here we skip "0" as this is the current cell
+    private List<int> neighboars = Enumerable.Range(-1, 2).Where(i => i != 0).ToList();
     private Grid _grid;
 
     // Called when the node enters the scene tree for the first time.
@@ -24,8 +28,6 @@ public class Main : Node2D
 
     private void VisitCells()
     {
-        var aliveNeighboursCount = 0;
-        var deadNeighboursCount = 0;
         for (int x = 0; x < _grid.CellGrid.GetLength(0); x++)
         {
             for (int y = 0; y < _grid.CellGrid.GetLength(1); y++)
@@ -33,41 +35,11 @@ public class Main : Node2D
             {
                 try
                 {
+                    var cell = _grid.CellGrid[x, y];
                     // get the 8 neighboaring cells
-                    var n = _grid.CellGrid[x, y - 1];
-                    var e = _grid.CellGrid[x + 1, y];
-                    var s = _grid.CellGrid[x, y + 1];
-                    var w = _grid.CellGrid[x - 1, y];
-                    var nw = _grid.CellGrid[x - 1, y - 1];
-                    var ne = _grid.CellGrid[x + 1, y - 1];
-                    var sw = _grid.CellGrid[x - 1, y + 1];
-                    var se = _grid.CellGrid[x + 1, y + 1];
+                    var livingNeighboars = GetLivingNeighboars(cell);
 
-                    if (n is Cell north)
-                        if (north.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (e is Cell east)
-                        if (east.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (s is Cell south)
-                        if (south.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (w is Cell west)
-                        if (west.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (nw is Cell northWest)
-                        if (northWest.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (ne is Cell northEast)
-                        if (northEast.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (sw is Cell southWest)
-                        if (southWest.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    if (se is Cell southEest)
-                        if (southEest.IsAlive) aliveNeighboursCount++; else deadNeighboursCount++;
-
-                    GD.Print($"Visiting: {x},{y}");
+                    GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} neighboars");
                 }
                 catch (Exception exception)
                 {
@@ -75,12 +47,29 @@ public class Main : Node2D
                     // Here I am using Try-Catch to avoid having 8 if statements to check for edge cells
                 }
 
-                // reset counts for next cell
-                aliveNeighboursCount = 0;
-                deadNeighboursCount = 0;
-
             }
 
         }
+    }
+
+    private int GetLivingNeighboars(Cell c)
+    {
+        var livingNeighboars = 0;
+        foreach (var i in neighboars)
+        {
+            foreach (var j in neighboars)
+            {
+                var x = c.X + i;
+                var y = c.Y + j;
+
+                if (this._grid.CellGrid[x, y].IsAlive && x >= 0 && x <= Width - 1 && y >= 0 && y <= Height - 1)
+                {
+                    livingNeighboars++;
+                }
+
+            }
+        }
+
+        return livingNeighboars;
     }
 }
