@@ -7,8 +7,7 @@ public class Main : Node2D
 {
     private const int Height = 10;
     private const int Width = 10;
-    // here we skip "0" as this is the current cell
-    private List<int> neighboars = Enumerable.Range(-1, 2).Where(i => i != 0).ToList();
+    private List<int> neighboars = new List<int>() { -1, 0, 1 };
     private Grid _grid;
 
     // Called when the node enters the scene tree for the first time.
@@ -39,7 +38,7 @@ public class Main : Node2D
                     // get the 8 neighboaring cells
                     var livingNeighboars = GetLivingNeighboars(cell);
 
-                    GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} neighboars");
+                    GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
                 }
                 catch (Exception exception)
                 {
@@ -59,10 +58,17 @@ public class Main : Node2D
         {
             foreach (var j in neighboars)
             {
+                // calculate the 8 neigbouring cells coordinates
                 var x = c.X + i;
                 var y = c.Y + j;
 
-                if (this._grid.CellGrid[x, y].IsAlive && x >= 0 && x <= Width - 1 && y >= 0 && y <= Height - 1)
+                // if the coorinates are equal to the current cell, we simply continue
+                if (i == 0 && j == 0)
+                {
+                    continue;
+                }
+                // check if we are widhing the screen && if the cell is "Alive"
+                else if (x >= 0 && x <= Width - 1 && y >= 0 && y <= Height - 1 && this._grid.CellGrid[x, y].IsAlive)
                 {
                     livingNeighboars++;
                 }

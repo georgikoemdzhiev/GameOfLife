@@ -4,6 +4,7 @@ using System;
 public class Cell : Control
 {
     private ColorRect _colorRect;
+    private Label _label;
 
     private bool _isAlive;
 
@@ -11,6 +12,7 @@ public class Cell : Control
     public override void _Ready()
     {
         _colorRect = GetNode<ColorRect>("ColorRect");
+        _label = GetNode<Label>("Label");
     }
 
     public int X { get; set; }
@@ -31,6 +33,11 @@ public class Cell : Control
             }
             _isAlive = value;
         }
+    }
+
+    public void SetLabelText(string str)
+    {
+        _label.Text = str;
     }
 
 }

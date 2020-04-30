@@ -17,6 +17,7 @@ public class Grid : GridContainer
         for (int x = 0; x < CellGrid.GetLength(0); x++)
         {
             for (int y = 0; y < CellGrid.GetLength(1); y++)
+
             {
                 var cell = this.cell.Instance() as Cell;
                 // set the cells X and Y
@@ -26,11 +27,19 @@ public class Grid : GridContainer
                 CellGrid[x, y] = cell;
                 // add the cell to the GridContainer
                 AddChild(cell);
+#if DEBUG
+                cell.SetLabelText($"{x},{y}");
 
-                // test code line
-                cell.IsAlive = x % 2 == 0;
+#endif
             }
-        }
 
+        }
+#if DEBUG
+        CellGrid[2, 5].IsAlive = true;
+        CellGrid[2, 6].IsAlive = true;
+        CellGrid[2, 7].IsAlive = true;
+        CellGrid[3, 6].IsAlive = true;
+
+#endif
     }
 }
