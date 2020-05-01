@@ -21,8 +21,24 @@ public class Main : Node2D
     */
     private void OnEpochEnd()
     {
+        RandomiseGrid();
         // Play God and see which cell survies and which one dies
         VisitCells();
+    }
+
+    private void RandomiseGrid()
+    {
+        // TODO implement good random algorithm
+        _grid.CellGrid[2, 5].IsAlive = true;
+        _grid.CellGrid[2, 6].IsAlive = true;
+        _grid.CellGrid[2, 7].IsAlive = true;
+        _grid.CellGrid[3, 6].IsAlive = true;
+        _grid.CellGrid[3, 7].IsAlive = true;
+        _grid.CellGrid[3, 8].IsAlive = true;
+        _grid.CellGrid[3, 9].IsAlive = true;
+        _grid.CellGrid[3, 1].IsAlive = true;
+        _grid.CellGrid[3, 2].IsAlive = true;
+        _grid.CellGrid[3, 3].IsAlive = true;
     }
 
     private void VisitCells()
@@ -32,19 +48,26 @@ public class Main : Node2D
             for (int y = 0; y < _grid.CellGrid.GetLength(1); y++)
 
             {
-                try
+                var cell = _grid.CellGrid[x, y];
+                // get the 8 neighboaring cells
+                var livingNeighboars = GetLivingNeighboars(cell);
+                if (livingNeighboars == 2 || livingNeighboars == 3 && cell.IsAlive)
                 {
-                    var cell = _grid.CellGrid[x, y];
-                    // get the 8 neighboaring cells
-                    var livingNeighboars = GetLivingNeighboars(cell);
+                    // Any live cell with two or three live neighbors survives.
+                    continue;
+                }
 
-                    GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
-                }
-                catch (Exception exception)
+                if (!cell.IsAlive && livingNeighboars == 3)
                 {
-                    GD.Print(exception.Message);
-                    // Here I am using Try-Catch to avoid having 8 if statements to check for edge cells
+                    // Any dead cell with three live neighbors becomes a live cell.
+                    cell.IsAlive = true;
+                    continue;
                 }
+
+                // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+                cell.IsAlive = false;
+
+                GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
 
             }
 

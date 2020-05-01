@@ -34,12 +34,5 @@ public class Grid : GridContainer
             }
 
         }
-#if DEBUG
-        CellGrid[2, 5].IsAlive = true;
-        CellGrid[2, 6].IsAlive = true;
-        CellGrid[2, 7].IsAlive = true;
-        CellGrid[3, 6].IsAlive = true;
-
-#endif
     }
 }
