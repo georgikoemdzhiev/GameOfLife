@@ -5,8 +5,8 @@ using System.Linq;
 
 public class Main : Node2D
 {
-    private const int Height = 10;
-    private const int Width = 10;
+    private const int Height = 30;
+    private const int Width = 30;
     private List<int> neighboars = new List<int>() { -1, 0, 1 };
     private Grid _grid;
 

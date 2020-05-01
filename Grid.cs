@@ -4,8 +4,7 @@ using System;
 public class Grid : GridContainer
 {
     private PackedScene cell;
-    private const int Num_Of_Columns = 10;
-    private const int Num_Of_Cells = 100;
+    private const int Num_Of_Columns = 30;
 
     public Cell[,] CellGrid = new Cell[Num_Of_Columns, Num_Of_Columns];
 
@@ -28,7 +27,7 @@ public class Grid : GridContainer
                 // add the cell to the GridContainer
                 AddChild(cell);
 #if DEBUG
-                cell.SetLabelText($"{x},{y}");
+                // cell.SetLabelText($"{x},{y}");
 
 #endif
             }
