@@ -4,13 +4,19 @@ using System;
 public class Grid : GridContainer
 {
     private PackedScene cell;
-    private const int Num_Of_Columns = 30;
+    private SizeConstants _sizeConstants = null;
 
-    public Cell[,] CellGrid = new Cell[Num_Of_Columns, Num_Of_Columns];
+    public Cell[,] CellGrid;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        _sizeConstants = GetNode<SizeConstants>("/root/SizeConstants");
+        CellGrid = new Cell[_sizeConstants.Width, _sizeConstants.Height];
+
+        // set the number of columns to the constant's value
+        this.Columns = _sizeConstants.Width;
+
         cell = ResourceLoader.Load("res://Cell.tscn") as PackedScene;
 
         for (int x = 0; x < CellGrid.GetLength(0); x++)
@@ -26,10 +32,6 @@ public class Grid : GridContainer
                 CellGrid[x, y] = cell;
                 // add the cell to the GridContainer
                 AddChild(cell);
-#if DEBUG
-                // cell.SetLabelText($"{x},{y}");
-
-#endif
             }
 
         }

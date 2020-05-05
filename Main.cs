@@ -1,18 +1,16 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class Main : Node2D
 {
-    private const int Height = 30;
-    private const int Width = 30;
     private List<int> neighboars = new List<int>() { -1, 0, 1 };
     private Grid _grid;
+    private SizeConstants _sizeConstants = null;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        _sizeConstants = GetNode<SizeConstants>("/root/SizeConstants");
         _grid = GetNode<GridContainer>("Grid") as Grid;
     }
 
@@ -67,7 +65,7 @@ public class Main : Node2D
                 // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
                 cell.IsAlive = false;
 
-                GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
+                // GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
 
             }
 
@@ -91,7 +89,7 @@ public class Main : Node2D
                     continue;
                 }
                 // check if we are widhing the screen && if the cell is "Alive"
-                else if (x >= 0 && x <= Width - 1 && y >= 0 && y <= Height - 1 && this._grid.CellGrid[x, y].IsAlive)
+                else if (x >= 0 && x <= _sizeConstants.Width - 1 && y >= 0 && y <= _sizeConstants.Height - 1 && this._grid.CellGrid[x, y].IsAlive)
                 {
                     livingNeighboars++;
                 }

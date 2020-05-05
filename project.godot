@@ -19,10 +19,14 @@ config/name="GameOfLife"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+SizeConstants="*res://SizeConstants.cs"
+
 [display]
 
-window/size/width=1240
-window/size/height=1240
+window/size/width=300
+window/size/height=300
 window/stretch/mode="2d"
 window/stretch/aspect="keep_width"
 

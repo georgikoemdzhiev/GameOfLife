@@ -57,6 +57,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="SizeConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
