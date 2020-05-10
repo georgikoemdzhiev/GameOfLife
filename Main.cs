@@ -49,7 +49,7 @@ public class Main : Node2D
                 var cell = _grid.CellGrid[x, y];
                 // get the 8 neighboaring cells
                 var livingNeighboars = GetLivingNeighboars(cell);
-                if (livingNeighboars == 2 || livingNeighboars == 3 && cell.IsAlive)
+                if ((livingNeighboars == 2 || livingNeighboars == 3) && cell.IsAlive)
                 {
                     // Any live cell with two or three live neighbors survives.
                     continue;
