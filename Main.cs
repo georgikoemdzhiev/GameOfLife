@@ -6,12 +6,15 @@ public class Main : Node2D
     private List<int> neighboars = new List<int>() { -1, 0, 1 };
     private Grid _grid;
     private SizeConstants _sizeConstants = null;
+    private Label _epocheNumberLabel;
+    private int _epocheNumber = 0;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _sizeConstants = GetNode<SizeConstants>("/root/SizeConstants");
         _grid = GetNode<GridContainer>("Grid") as Grid;
+        _epocheNumberLabel = GetNode<Label>("Label");
     }
 
     /*
@@ -22,6 +25,7 @@ public class Main : Node2D
         RandomiseGrid();
         // Play God and see which cell survies and which one dies
         VisitCells();
+        _epocheNumberLabel.Text = $"Epoche: {++_epocheNumber}";
     }
 
     private void RandomiseGrid()
@@ -41,6 +45,8 @@ public class Main : Node2D
 
     private void VisitCells()
     {
+        // create a deep clone of the current cell grid and use it to record any cell state changes
+        var cellGridClone = _grid.CloneCellGrid();
         for (int x = 0; x < _grid.CellGrid.GetLength(0); x++)
         {
             for (int y = 0; y < _grid.CellGrid.GetLength(1); y++)
@@ -58,18 +64,20 @@ public class Main : Node2D
                 if (!cell.IsAlive && livingNeighboars == 3)
                 {
                     // Any dead cell with three live neighbors becomes a live cell.
-                    cell.IsAlive = true;
+                    cellGridClone[x, y].IsAlive = true;
                     continue;
                 }
 
                 // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-                cell.IsAlive = false;
+                cellGridClone[x, y].IsAlive = false;
 
                 // GD.Print($"Visiting: {cell.X},{cell.Y}, it has {livingNeighboars} alive neighboar cells");
 
             }
 
         }
+        // swap the currently shown cell grid with the updated clone
+        _grid.CellGrid = cellGridClone;
     }
 
     private int GetLivingNeighboars(Cell c)

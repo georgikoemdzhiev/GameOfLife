@@ -1,7 +1,7 @@
-using Godot;
 using System;
+using Godot;
 
-public class Cell : Control
+public class Cell : Control, ICloneable
 {
     private ColorRect _colorRect;
 
@@ -15,6 +15,12 @@ public class Cell : Control
         _colorRect = GetNode<ColorRect>("ColorRect");
         // set teh size of the cell to the one defined in the constants file
         _colorRect.SetSize(new Vector2(_sizeConstants.CellSize, _sizeConstants.CellSize));
+    }
+
+    public object Clone()
+    {
+        var other = this.MemberwiseClone();
+        return other;
     }
 
     public int X { get; set; }

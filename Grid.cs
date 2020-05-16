@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class Grid : GridContainer
 {
@@ -35,5 +34,24 @@ public class Grid : GridContainer
             }
 
         }
+    }
+
+    public Cell[,] CloneCellGrid()
+    {
+
+        var cellGridClone = new Cell[_sizeConstants.Width, _sizeConstants.Height];
+
+        for (int x = 0; x < CellGrid.GetLength(0); x++)
+        {
+            for (int y = 0; y < CellGrid.GetLength(1); y++)
+
+            {
+                Cell cell = CellGrid[x, y];
+                var deepClone = (Cell)cell.Clone();
+                cellGridClone[x, y] = deepClone;
+            }
+
+        }
+        return cellGridClone;
     }
 }
