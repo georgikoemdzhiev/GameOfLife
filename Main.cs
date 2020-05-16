@@ -25,7 +25,7 @@ public class Main : Node2D
         RandomiseGrid();
         // Play God and see which cell survies and which one dies
         VisitCells();
-        _epocheNumberLabel.Text = $"Epoche: {++_epocheNumber}";
+        _epocheNumberLabel.Text = $"Epoch: {++_epocheNumber}";
     }
 
     private void RandomiseGrid()
